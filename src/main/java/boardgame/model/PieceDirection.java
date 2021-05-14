@@ -1,0 +1,27 @@
+package boardgame.model;
+
+public enum PieceDirection implements Direction{
+    UP_LEFT(-1, -1),
+    UP_RIGHT(-1, 1),
+    DOWN_LEFT(1, -1),
+    DOWN_RIGHT(1, 1)
+    ;
+
+    private final int rowChange;
+    private final int colChange;
+
+    PieceDirection(int rowChange, int colChange) {
+        this.rowChange = rowChange;
+        this.colChange = colChange;
+    }
+
+    @Override
+    public int getRowChange() {
+        return 0;
+    }
+
+    @Override
+    public int getColChange() {
+        return 0;
+    }
+}
