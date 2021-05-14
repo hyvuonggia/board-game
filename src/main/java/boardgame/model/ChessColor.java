@@ -1,4 +1,4 @@
-package boardgame;
+package boardgame.model;
 
 public enum ChessColor {
     BLUE,

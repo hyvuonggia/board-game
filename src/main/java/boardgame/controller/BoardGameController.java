@@ -1,4 +1,4 @@
-package boardgame;
+package boardgame.controller;
 
 public class BoardGameController {
 }
