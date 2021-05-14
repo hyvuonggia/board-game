@@ -24,4 +24,13 @@ public enum PieceDirection implements Direction{
     public int getColChange() {
         return colChange;
     }
+
+    public static PieceDirection of(int rowChange, int colChange){
+        for (PieceDirection direction : values()) {
+            if (direction.rowChange == rowChange && direction.colChange == colChange){
+                return direction;
+            }
+        }
+        throw new IllegalArgumentException();
+    }
 }
