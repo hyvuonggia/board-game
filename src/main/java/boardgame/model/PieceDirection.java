@@ -17,11 +17,11 @@ public enum PieceDirection implements Direction{
 
     @Override
     public int getRowChange() {
-        return 0;
+        return rowChange;
     }
 
     @Override
     public int getColChange() {
-        return 0;
+        return colChange;
     }
 }

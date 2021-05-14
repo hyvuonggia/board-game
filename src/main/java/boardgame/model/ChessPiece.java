@@ -1,5 +1,6 @@
 package boardgame.model;
 
+import javafx.beans.property.ObjectProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ChessPiece {
     private ChessColor chessColor;
-    private int row;
-    private int col;
+    private final ObjectProperty position =
 }
