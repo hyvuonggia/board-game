@@ -1,5 +1,10 @@
 package boardgame.model;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.StringJoiner;
+
 public class BoardGameModel {
     public static final int BOARD_SIZE = 5;
 
@@ -28,13 +33,18 @@ public class BoardGameModel {
         this.pieces = pieces.clone();
     }
 
-    public boolean isOnBoard(Position position) {
+    private boolean isOnBoard(Position position) {
         if (position.row() >= 0 && position.row() < BOARD_SIZE && position.col() >= 0 && position.col() < BOARD_SIZE) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Check all pieces are not outside the board
+     *
+     * @param pieces
+     */
     public void checkPieces(ChessPiece[] pieces){
         for (ChessPiece piece : pieces) {
             if (!isOnBoard(piece.getPosition())) {
@@ -43,5 +53,86 @@ public class BoardGameModel {
         }
     }
 
+    @Override
+    public String toString() {
+        StringJoiner joiner = new StringJoiner("\n");
+        for (ChessPiece piece : pieces) {
+            joiner.add(piece.toString());
+        }
+        return joiner.toString();
+    }
+
+    public static void main(String[] args) {
+        BoardGameModel model = new BoardGameModel();
+        System.out.println(model);
+    }
+
+    /**
+     * Get the color of the piece
+     *
+     * @param pieceNumber
+     * @return color of the piece
+     */
+    public ChessColor getPieceColor(int pieceNumber){
+        return pieces[pieceNumber].getChessColor();
+    }
+
+    /**
+     * Get the current position of the chess piece
+     *
+     * @param pieceNumber
+     * @return current position of the piece
+     */
+    public Position getPiecePosition(int pieceNumber){
+        return pieces[pieceNumber].getPosition();
+    }
+
+    /**
+     * Get number of pieces on the board
+     *
+     * @return number of pieces
+     */
+    public int getNumberOfPieces(){
+        return this.pieces.length;
+    }
+
+    /**
+     * Check if the next move is still on the board and not previously occupied by another piece
+     *
+     * @param pieceNumber
+     * @param direction
+     * @return
+     */
+    public boolean isValidMove(int pieceNumber, PieceDirection direction){
+        if (pieceNumber < 0 || pieceNumber >= BOARD_SIZE){
+            throw new IllegalArgumentException();
+        }
+        Position newPosition = pieces[pieceNumber].getPosition().moveTo(direction);
+        if (!isOnBoard(newPosition)){
+            return false;
+        }
+        for (ChessPiece piece : pieces) {
+            if (newPosition == piece.getPosition()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get all the possible moves of a chess piece
+     *
+     * @param pieceNumber
+     * @return set of possible moves
+     */
+    public Set<PieceDirection> getValidMoves(int pieceNumber){
+        Set<PieceDirection> validMoves = new HashSet<>();
+        for (PieceDirection direction : PieceDirection.values()) {
+            if (isValidMove(pieceNumber, direction)){
+                validMoves.add(direction);
+            }
+        }
+        return validMoves;
+    }
 
 }
