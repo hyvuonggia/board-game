@@ -1,9 +1,6 @@
 package boardgame.model;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class BoardGameModel {
     public static final int BOARD_SIZE = 5;
@@ -133,6 +130,38 @@ public class BoardGameModel {
             }
         }
         return validMoves;
+    }
+
+    public void move(int pieceNumber, PieceDirection direction){
+        pieces[pieceNumber].moveTo(direction);
+    }
+
+    /**
+     * Get positions of every pieces on board
+     *
+     * @return list of positions
+     */
+    public List<Position> getPiecePositions(){
+        List<Position> positions = new ArrayList<>();
+        for (ChessPiece piece : pieces) {
+            positions.add(piece.getPosition());
+        }
+        return positions;
+    }
+
+    /**
+     * Get the piece number of specified position if there is. Otherwise returns -1
+     *
+     * @param position
+     * @return the piece number
+     */
+    public int getPieceNumber(Position position){
+        for (int i = 0; i < pieces.length; i++) {
+            if (pieces[i].getPosition() == position){
+                return i;
+            }
+        }
+        return -1;
     }
 
 }
