@@ -1,17 +1,24 @@
 package boardgame.controller;
 
+import boardgame.model.BoardGameModel;
+import boardgame.model.Position;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class BoardGameController {
     @FXML
     private GridPane board;
+
+    BoardGameModel model = new BoardGameModel();
     
     @FXML
     private void initialize(){
         createBoard();
-
+        createPieces();
     }
 
     private void createBoard(){
@@ -27,5 +34,28 @@ public class BoardGameController {
         var square = new StackPane();
         square.getStyleClass().add("square");
         return square;
+    }
+
+    private void createPieces(){
+        for (int i = 0; i < model.getNumberOfPieces(); i++) {
+            var piece = createPiece(Color.valueOf(model.getPieceColor(i).name()));
+            getSquare(model.getPiecePosition(i)).getChildren().add(piece);
+        }
+    }
+
+    private Circle createPiece(Color color){
+        var piece = new Circle(50);
+        piece.setFill(color);
+        return piece;
+    }
+    
+    private StackPane getSquare(Position position){
+        for (Node child : board.getChildren()) {
+            if (GridPane.getRowIndex(child) == position.row()
+                    && GridPane.getColumnIndex(child) == position.col()) {
+                return (StackPane) child;
+            }
+        }
+        throw new AssertionError();
     }
 }
