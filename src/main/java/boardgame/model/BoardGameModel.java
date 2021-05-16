@@ -9,9 +9,13 @@ public class BoardGameModel {
 
     public ChessPiece[] pieces;
 
+    private List<Position> redWinPositions = new ArrayList<>();
+
+    private List<Position> blueWinPositions = new ArrayList<>();
 
     public BoardGameModel() {
-        this(new ChessPiece(ChessColor.BLUE, new Position(0, 0)),
+        this(
+                new ChessPiece(ChessColor.BLUE, new Position(0, 0)),
                 new ChessPiece(ChessColor.BLUE, new Position(0, 1)),
                 new ChessPiece(ChessColor.BLUE, new Position(0, 2)),
                 new ChessPiece(ChessColor.BLUE, new Position(0, 3)),
@@ -26,6 +30,7 @@ public class BoardGameModel {
                 new ChessPiece(ChessColor.RED, new Position(3, 0)),
                 new ChessPiece(ChessColor.RED, new Position(3, 4))
         );
+        addGameOverPositions();
     }
 
     public BoardGameModel(ChessPiece... pieces) {
@@ -65,7 +70,6 @@ public class BoardGameModel {
         }
         return joiner.toString();
     }
-
 
 
     /**
@@ -156,7 +160,7 @@ public class BoardGameModel {
     /**
      * Get the piece number of specified position if there is. Otherwise returns -1
      *
-     * @param position
+     * @param position of the piece
      * @return the piece number
      */
     public int getPieceNumber(Position position) {
@@ -168,8 +172,64 @@ public class BoardGameModel {
         return -1;
     }
 
+    private void addGameOverPositions() {
+        for (var piece : pieces) {
+            if (piece.getChessColor().equals(ChessColor.BLUE)) {
+                redWinPositions.add(piece.getPosition());
+            }
+            if (piece.getChessColor().equals(ChessColor.RED)) {
+                blueWinPositions.add(piece.getPosition());
+            }
+        }
 
+//        redWinPositions.add(new Position(0,0));
+//        redWinPositions.add(new Position(0,1));
+//        redWinPositions.add(new Position(0,2));
+//        redWinPositions.add(new Position(0,3));
+//        redWinPositions.add(new Position(0,4));
+//        redWinPositions.add(new Position(1,0));
+//        redWinPositions.add(new Position(1,4));
+    }
 
+    public List<Position> getRedPiecesPositions() {
+        List<Position> redPiecesPositions = new ArrayList<>();
+        for (ChessPiece piece : pieces) {
+            if (piece.getChessColor().equals(ChessColor.RED)) {
+                redPiecesPositions.add(piece.getPosition());
+            }
+        }
+        return redPiecesPositions;
+    }
+
+    public boolean isRedWins() {
+        List<Position> positions = getRedPiecesPositions();
+        for (Position position : positions) {
+            if (!redWinPositions.contains(position)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public List<Position> getBluePiecesPositions() {
+        List<Position> bluePiecesPositions = new ArrayList<>();
+        for (ChessPiece piece : pieces) {
+            if (piece.getChessColor().equals(ChessColor.RED)) {
+                bluePiecesPositions.add(piece.getPosition());
+            }
+        }
+        return bluePiecesPositions;
+    }
+
+    public boolean isBlueWins() {
+        List<Position> positions = getBluePiecesPositions();
+        for (Position position : positions) {
+            if (!blueWinPositions.contains(position)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 }

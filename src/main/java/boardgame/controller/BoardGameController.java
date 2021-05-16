@@ -4,6 +4,7 @@ import boardgame.model.BoardGameModel;
 import boardgame.model.ChessColor;
 import boardgame.model.PieceDirection;
 import boardgame.model.Position;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -27,9 +28,7 @@ public class BoardGameController {
 
     private Position selected;
 
-    private List<Position> redWinPositions = new ArrayList<>();
 
-    private List<Position> blueWinPositions = new ArrayList<>();
 
     private enum SelectionPhase {
         SELECT_FROM,
@@ -51,8 +50,6 @@ public class BoardGameController {
         createPieces();
         setSelectablePositions();
         showSelectablePositions();
-        addGameOverPositions();
-
     }
 
     private void createBoard() {
@@ -119,8 +116,12 @@ public class BoardGameController {
                     var direction = PieceDirection.of(position.row() - selected.row(), position.col() - selected.col());
                     Logger.debug("Moving piece {} {}", pieceNumber, direction);
                     model.move(pieceNumber, direction);
+                    if (model.isRedWins() || model.isBlueWins()){
+                        System.exit(0);
+                    }
                     deselectSelectedPosition();
                     alterSelectionPhase();
+
                 }
             }
         }
@@ -190,16 +191,8 @@ public class BoardGameController {
         oldSquare.getChildren().clear();
     }
 
-    private void addGameOverPositions(){
-        for (var piece : model.pieces) {
-            if (piece.getChessColor().equals(ChessColor.BLUE)){
-                redWinPositions.add(piece.getPosition());
-            }
-            if (piece.getChessColor().equals(ChessColor.RED)){
-                blueWinPositions.add(piece.getPosition());
-            }
-        }
-    }
+
+
 
 
 }
