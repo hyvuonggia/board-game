@@ -1,11 +1,14 @@
 package boardgame.model;
 
+import javafx.beans.property.ObjectProperty;
+
 import java.util.*;
 
 public class BoardGameModel {
     public static final int BOARD_SIZE = 5;
 
     public ChessPiece[] pieces;
+
 
     public BoardGameModel() {
         this(new ChessPiece(ChessColor.BLUE, new Position(0, 0)),
@@ -37,12 +40,16 @@ public class BoardGameModel {
         return false;
     }
 
+    public ObjectProperty<Position> positionProperty(int pieceNumber) {
+        return pieces[pieceNumber].positionProperty();
+    }
+
     /**
      * Check all pieces are not outside the board
      *
      * @param pieces
      */
-    public void checkPieces(ChessPiece[] pieces){
+    public void checkPieces(ChessPiece[] pieces) {
         for (ChessPiece piece : pieces) {
             if (!isOnBoard(piece.getPosition())) {
                 throw new IllegalArgumentException();
@@ -59,10 +66,7 @@ public class BoardGameModel {
         return joiner.toString();
     }
 
-    public static void main(String[] args) {
-        BoardGameModel model = new BoardGameModel();
-        System.out.println(model);
-    }
+
 
     /**
      * Get the color of the piece
@@ -70,7 +74,7 @@ public class BoardGameModel {
      * @param pieceNumber
      * @return color of the piece
      */
-    public ChessColor getPieceColor(int pieceNumber){
+    public ChessColor getPieceColor(int pieceNumber) {
         return pieces[pieceNumber].getChessColor();
     }
 
@@ -80,7 +84,7 @@ public class BoardGameModel {
      * @param pieceNumber
      * @return current position of the piece
      */
-    public Position getPiecePosition(int pieceNumber){
+    public Position getPiecePosition(int pieceNumber) {
         return pieces[pieceNumber].getPosition();
     }
 
@@ -89,7 +93,7 @@ public class BoardGameModel {
      *
      * @return number of pieces
      */
-    public int getNumberOfPieces(){
+    public int getNumberOfPieces() {
         return this.pieces.length;
     }
 
@@ -100,16 +104,16 @@ public class BoardGameModel {
      * @param direction
      * @return
      */
-    public boolean isValidMove(int pieceNumber, PieceDirection direction){
-        if (pieceNumber < 0 || pieceNumber >= BOARD_SIZE){
+    public boolean isValidMove(int pieceNumber, PieceDirection direction) {
+        if (pieceNumber < 0 || pieceNumber >= pieces.length) {
             throw new IllegalArgumentException();
         }
         Position newPosition = pieces[pieceNumber].getPosition().moveTo(direction);
-        if (!isOnBoard(newPosition)){
+        if (!isOnBoard(newPosition)) {
             return false;
         }
         for (ChessPiece piece : pieces) {
-            if (newPosition == piece.getPosition()) {
+            if (newPosition.equals(piece.getPosition())) {
                 return false;
             }
         }
@@ -122,17 +126,17 @@ public class BoardGameModel {
      * @param pieceNumber
      * @return set of possible moves
      */
-    public Set<PieceDirection> getValidMoves(int pieceNumber){
+    public Set<PieceDirection> getValidMoves(int pieceNumber) {
         Set<PieceDirection> validMoves = new HashSet<>();
         for (PieceDirection direction : PieceDirection.values()) {
-            if (isValidMove(pieceNumber, direction)){
+            if (isValidMove(pieceNumber, direction)) {
                 validMoves.add(direction);
             }
         }
         return validMoves;
     }
 
-    public void move(int pieceNumber, PieceDirection direction){
+    public void move(int pieceNumber, PieceDirection direction) {
         pieces[pieceNumber].moveTo(direction);
     }
 
@@ -141,7 +145,7 @@ public class BoardGameModel {
      *
      * @return list of positions
      */
-    public List<Position> getPiecePositions(){
+    public List<Position> getPiecePositions() {
         List<Position> positions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
             positions.add(piece.getPosition());
@@ -155,13 +159,17 @@ public class BoardGameModel {
      * @param position
      * @return the piece number
      */
-    public int getPieceNumber(Position position){
+    public int getPieceNumber(Position position) {
         for (int i = 0; i < pieces.length; i++) {
-            if (pieces[i].getPosition() == position){
+            if (pieces[i].getPosition().equals(position)) {
                 return i;
             }
         }
         return -1;
     }
+
+
+
+
 
 }
