@@ -26,7 +26,7 @@ public class NameController {
         Logger.info("Player two's name: {}", playerTwoNameTextField.getText());
         String playerOneName = playerOneNameTextField.getText();
         String playerTwoName = playerTwoNameTextField.getText();
-        if (!playerOneName.equals("") || !playerTwoName.equals("")){
+        if (!playerOneName.equals("") && !playerTwoName.equals("")){
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ui.fxml"));
             Parent root = fxmlLoader.load();
             BoardGameController boardGameController = fxmlLoader.getController();
@@ -35,7 +35,6 @@ public class NameController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
-
         }
     }
 

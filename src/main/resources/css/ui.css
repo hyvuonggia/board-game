@@ -16,10 +16,10 @@
 
 #playerOneNameText{
     -fx-font-size: 50;
-    -fx-text-fill: red;
+    -fx-fill: red;
 }
 
 #playerTwoNameText{
     -fx-font-size: 50;
-    -fx-text-fill: blue;
+    -fx-fill: blue;
 }
