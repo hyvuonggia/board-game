@@ -1,6 +1,7 @@
 package boardgame.model;
 
 import javafx.beans.property.ObjectProperty;
+import org.tinylog.Logger;
 
 import java.util.*;
 
@@ -230,6 +231,8 @@ public class BoardGameModel {
         }
         return true;
     }
+
+
 
 
 }

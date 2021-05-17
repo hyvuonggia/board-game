@@ -13,3 +13,13 @@
 .selectable {
     -fx-border-width: 5;
 }
+
+#playerOneNameText{
+    -fx-font-size: 50;
+    -fx-text-fill: red;
+}
+
+#playerTwoNameText{
+    -fx-font-size: 50;
+    -fx-text-fill: blue;
+}

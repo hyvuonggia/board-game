@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class BoardGameApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/ui.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/nameui.fxml"));
         stage.setScene(new Scene(root));
         stage.setTitle("Board Game");
         stage.show();

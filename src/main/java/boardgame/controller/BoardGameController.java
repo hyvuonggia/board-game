@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import org.tinylog.Logger;
 
 import java.util.ArrayList;
@@ -29,7 +30,6 @@ public class BoardGameController {
     private Position selected;
 
 
-
     private enum SelectionPhase {
         SELECT_FROM,
         SELECT_TO;
@@ -43,6 +43,13 @@ public class BoardGameController {
     }
 
     private SelectionPhase selectionPhase = SelectionPhase.SELECT_FROM;
+
+    @FXML
+    private Text playerOneNameText;
+
+    @FXML
+    private Text playerTwoNameText;
+
 
     @FXML
     private void initialize() {
@@ -116,8 +123,13 @@ public class BoardGameController {
                     var direction = PieceDirection.of(position.row() - selected.row(), position.col() - selected.col());
                     Logger.debug("Moving piece {} {}", pieceNumber, direction);
                     model.move(pieceNumber, direction);
-                    if (model.isRedWins() || model.isBlueWins()){
-                        System.exit(0);
+                    if (model.isRedWins()) {
+                        Logger.info("RED WINS");
+                        Platform.exit();
+                    }
+                    if (model.isBlueWins()) {
+                        Logger.info("BLUE WINS");
+                        Platform.exit();
                     }
                     deselectSelectedPosition();
                     alterSelectionPhase();
@@ -182,7 +194,6 @@ public class BoardGameController {
     }
 
 
-
     private void piecePositionChange(ObservableValue<? extends Position> observable, Position oldPosition, Position newPosition) {
         Logger.debug("Move: {} -> {}", oldPosition, newPosition);
         StackPane oldSquare = getSquare(oldPosition);
@@ -191,8 +202,14 @@ public class BoardGameController {
         oldSquare.getChildren().clear();
     }
 
+    public void setPlayerOneName(String name) {
+        Logger.info("Setting player one's name to {}", name);
+        this.playerOneNameText.setText(name);
+    }
 
-
-
+    public void setPlayerTwoName(String name) {
+        Logger.info("Setting player two's name to {}", name);
+        this.playerTwoNameText.setText(name);
+    }
 
 }
