@@ -2,23 +2,46 @@ package boardgame.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import org.tinylog.Logger;
 
 import java.util.*;
 
+/**
+ * Model implementation of the game.
+ */
 public class BoardGameModel {
+
+    /**
+     * Represents the size of the board.
+     */
     public static final int BOARD_SIZE = 5;
 
+    /**
+     * Represents the array of pieces on the board.
+     */
     public ChessPiece[] pieces;
 
+    /**
+     * Represents a list of positions that all red pieces need to stand in order to win the game.
+     */
     private List<Position> redWinPositions = new ArrayList<>();
 
+    /**
+     * Represents a list of positions that all blue pieces need to stand in order to win the game.
+     */
     private List<Position> blueWinPositions = new ArrayList<>();
 
+    /**
+     * Represents 2 player of the game.
+     */
     public enum Player{
         PLAYER1,
         PLAYER2;
 
+        /**
+         * Alternate between two players.
+         *
+         * @return the next player.
+         */
         public Player next(){
             return switch (this){
                 case PLAYER1 -> PLAYER2;
@@ -27,8 +50,14 @@ public class BoardGameModel {
         }
     }
 
+    /**
+     * Represents the current player.
+     */
     private ReadOnlyObjectWrapper<Player> currentPlayer = new ReadOnlyObjectWrapper<>();
 
+    /**
+     * Create {@code BoardGameModel} instance
+     */
     public BoardGameModel() {
         this(
                 new ChessPiece(ChessColor.BLUE, new Position(0, 0)),
@@ -50,10 +79,16 @@ public class BoardGameModel {
         addGameOverPositions();
     }
 
+    /**
+     * Create {@code BoardGameModel} instance.
+     *
+     * @param pieces list of pieces to be added into the board.
+     */
     public BoardGameModel(ChessPiece... pieces) {
         checkPieces(pieces);
         this.pieces = pieces.clone();
     }
+
 
     private boolean isOnBoard(Position position) {
         if (position.row() >= 0 && position.row() < BOARD_SIZE && position.col() >= 0 && position.col() < BOARD_SIZE) {
@@ -62,14 +97,20 @@ public class BoardGameModel {
         return false;
     }
 
+    /**
+     * Get the position property.
+     *
+     * @param pieceNumber number of a piece.
+     * @return {@code ObjectProperty<Position>} of a piece.
+     */
     public ObjectProperty<Position> positionProperty(int pieceNumber) {
         return pieces[pieceNumber].positionProperty();
     }
 
     /**
-     * Check all pieces are not outside the board
+     * Check all pieces are not outside the board.
      *
-     * @param pieces
+     * @param pieces array of pieces that needs to check
      */
     public void checkPieces(ChessPiece[] pieces) {
         for (ChessPiece piece : pieces) {
@@ -90,9 +131,9 @@ public class BoardGameModel {
 
 
     /**
-     * Get the color of the piece
+     * Get the color of the piece.
      *
-     * @param pieceNumber
+     * @param pieceNumber number of a piece
      * @return color of the piece
      */
     public ChessColor getPieceColor(int pieceNumber) {
@@ -100,9 +141,9 @@ public class BoardGameModel {
     }
 
     /**
-     * Get the current position of the chess piece
+     * Get the current position of the chess piece.
      *
-     * @param pieceNumber
+     * @param pieceNumber number of a piece
      * @return current position of the piece
      */
     public Position getPiecePosition(int pieceNumber) {
@@ -110,7 +151,7 @@ public class BoardGameModel {
     }
 
     /**
-     * Get number of pieces on the board
+     * Get number of pieces on the board.
      *
      * @return number of pieces
      */
@@ -119,11 +160,12 @@ public class BoardGameModel {
     }
 
     /**
-     * Check if the next move is still on the board and not previously occupied by another piece
+     * Check if the next move is still on the board and not previously occupied by another piece.
      *
-     * @param pieceNumber
-     * @param direction
-     * @return
+     * @param pieceNumber number of the piece.
+     * @param direction direction of the next move.
+     * @return {@code true} if the next move is inside the board and not previously occupied by another piece.
+     * Otherwise {@code return} {@code false}.
      */
     public boolean isValidMove(int pieceNumber, PieceDirection direction) {
         if (pieceNumber < 0 || pieceNumber >= pieces.length) {
@@ -142,10 +184,10 @@ public class BoardGameModel {
     }
 
     /**
-     * Get all the possible moves of a chess piece
+     * Get all the possible moves of a chess piece.
      *
-     * @param pieceNumber
-     * @return set of possible moves
+     * @param pieceNumber number of the piece.
+     * @return set of possible moves.
      */
     public Set<PieceDirection> getValidMoves(int pieceNumber) {
         Set<PieceDirection> validMoves = new HashSet<>();
@@ -157,15 +199,21 @@ public class BoardGameModel {
         return validMoves;
     }
 
+    /**
+     * Represents the movement of a piece.
+     *
+     * @param pieceNumber number of a piece.
+     * @param direction direction of the move.
+     */
     public void move(int pieceNumber, PieceDirection direction) {
         pieces[pieceNumber].moveTo(direction);
         currentPlayer.set(currentPlayer.get().next());
     }
 
     /**
-     * Get positions of every pieces on board
+     * Get positions of every pieces on board.
      *
-     * @return list of positions
+     * @return list of positions.
      */
     public List<Position> getPiecePositions() {
         List<Position> positions = new ArrayList<>();
@@ -176,10 +224,10 @@ public class BoardGameModel {
     }
 
     /**
-     * Get the piece number of specified position if there is. Otherwise returns -1
+     * Get the piece number of specified position if there is. Otherwise returns -1.
      *
-     * @param position of the piece
-     * @return the piece number
+     * @param position of the piece.
+     * @return the piece number.
      */
     public int getPieceNumber(Position position) {
         for (int i = 0; i < pieces.length; i++) {
@@ -190,10 +238,12 @@ public class BoardGameModel {
         return -1;
     }
 
-    public Player getCurrentPlayer() {
-        return currentPlayer.get();
-    }
 
+    /**
+     * Get the current player property.
+     *
+     * @return {@code ReadOnlyObjectWrapper<Player>} of the current player.
+     */
     public ReadOnlyObjectWrapper<Player> currentPlayerProperty() {
         return currentPlayer;
     }
@@ -217,7 +267,7 @@ public class BoardGameModel {
 //        redWinPositions.add(new Position(1,4));
     }
 
-    public List<Position> getRedPiecesPositions() {
+    private List<Position> getRedPiecesPositions() {
         List<Position> redPiecesPositions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
             if (piece.getChessColor().equals(ChessColor.RED)) {
@@ -227,6 +277,12 @@ public class BoardGameModel {
         return redPiecesPositions;
     }
 
+    /**
+     * Check if all red pieces are in the win positions or not
+     *
+     * @return {@code true} if all red pieces are in the win positions,
+     * {@code false} if at least one piece is still not in the win position
+     */
     public boolean isRedWins() {
         List<Position> positions = getRedPiecesPositions();
         for (Position position : positions) {
@@ -237,7 +293,7 @@ public class BoardGameModel {
         return true;
     }
 
-    public List<Position> getBluePiecesPositions() {
+    private List<Position> getBluePiecesPositions() {
         List<Position> bluePiecesPositions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
             if (piece.getChessColor().equals(ChessColor.BLUE)) {
@@ -247,6 +303,12 @@ public class BoardGameModel {
         return bluePiecesPositions;
     }
 
+    /**
+     * Check if all blue pieces are in the win positions or not
+     *
+     * @return {@code true} if all blue pieces are in the win positions,
+     * {@code false} if at least one piece is still not in the win position
+     */
     public boolean isBlueWins() {
         List<Position> positions = getBluePiecesPositions();
         for (Position position : positions) {
@@ -256,8 +318,4 @@ public class BoardGameModel {
         }
         return true;
     }
-
-
-
-
 }
