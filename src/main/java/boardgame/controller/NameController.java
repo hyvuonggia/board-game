@@ -22,6 +22,7 @@ public class NameController {
 
     @FXML
     public void handlePlayGameButton(ActionEvent event) throws IOException {
+        Logger.info("Clicked on Play Game button");
         Logger.info("Player one's name: {}", playerOneNameTextField.getText());
         Logger.info("Player two's name: {}", playerTwoNameTextField.getText());
         String playerOneName = playerOneNameTextField.getText();

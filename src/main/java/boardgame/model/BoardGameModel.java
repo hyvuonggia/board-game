@@ -1,6 +1,7 @@
 package boardgame.model;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.tinylog.Logger;
 
 import java.util.*;
@@ -13,6 +14,20 @@ public class BoardGameModel {
     private List<Position> redWinPositions = new ArrayList<>();
 
     private List<Position> blueWinPositions = new ArrayList<>();
+
+    public enum Player{
+        PLAYER1,
+        PLAYER2;
+
+        public Player next(){
+            return switch (this){
+                case PLAYER1 -> PLAYER2;
+                case PLAYER2 -> PLAYER1;
+            };
+        }
+    }
+
+    private ReadOnlyObjectWrapper<Player> currentPlayer = new ReadOnlyObjectWrapper<>();
 
     public BoardGameModel() {
         this(
@@ -31,6 +46,7 @@ public class BoardGameModel {
                 new ChessPiece(ChessColor.RED, new Position(3, 0)),
                 new ChessPiece(ChessColor.RED, new Position(3, 4))
         );
+        currentPlayer.set(Player.PLAYER1);
         addGameOverPositions();
     }
 
@@ -143,6 +159,7 @@ public class BoardGameModel {
 
     public void move(int pieceNumber, PieceDirection direction) {
         pieces[pieceNumber].moveTo(direction);
+        currentPlayer.set(currentPlayer.get().next());
     }
 
     /**
@@ -171,6 +188,14 @@ public class BoardGameModel {
             }
         }
         return -1;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer.get();
+    }
+
+    public ReadOnlyObjectWrapper<Player> currentPlayerProperty() {
+        return currentPlayer;
     }
 
     private void addGameOverPositions() {
@@ -215,7 +240,7 @@ public class BoardGameModel {
     public List<Position> getBluePiecesPositions() {
         List<Position> bluePiecesPositions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
-            if (piece.getChessColor().equals(ChessColor.RED)) {
+            if (piece.getChessColor().equals(ChessColor.BLUE)) {
                 bluePiecesPositions.add(piece.getPosition());
             }
         }
