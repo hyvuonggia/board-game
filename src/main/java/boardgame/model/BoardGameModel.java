@@ -2,6 +2,7 @@ package boardgame.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import org.tinylog.Logger;
 
 import java.util.*;
 
@@ -54,6 +55,9 @@ public class BoardGameModel {
      * Represents the current player.
      */
     private ReadOnlyObjectWrapper<Player> currentPlayer = new ReadOnlyObjectWrapper<>();
+
+    private int countStepPlayer1;
+    private int countStepPlayer2;
 
     /**
      * Create {@code BoardGameModel} instance
@@ -199,6 +203,22 @@ public class BoardGameModel {
         return validMoves;
     }
 
+    public int getCountStepPlayer1() {
+        return countStepPlayer1;
+    }
+
+    public void setCountStepPlayer1(int countStepPlayer1) {
+        this.countStepPlayer1 = countStepPlayer1;
+    }
+
+    public int getCountStepPlayer2() {
+        return countStepPlayer2;
+    }
+
+    public void setCountStepPlayer2(int countStepPlayer2) {
+        this.countStepPlayer2 = countStepPlayer2;
+    }
+
     /**
      * Represents the movement of a piece.
      *
@@ -207,6 +227,14 @@ public class BoardGameModel {
      */
     public void move(int pieceNumber, PieceDirection direction) {
         pieces[pieceNumber].moveTo(direction);
+        if (currentPlayer.get().equals(Player.PLAYER1)){
+            setCountStepPlayer1(getCountStepPlayer1() + 1);
+            Logger.info("Number of steps of PLAYER1: {}", countStepPlayer1);
+        }
+        if (currentPlayer.get().equals(Player.PLAYER2)){
+            setCountStepPlayer2(getCountStepPlayer2() + 1);
+            Logger.info("Number of steps of PLAYER2: {}", countStepPlayer2);
+        }
         currentPlayer.set(currentPlayer.get().next());
     }
 
