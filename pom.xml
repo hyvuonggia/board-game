@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>hu.unideb.inf</groupId>
-    <artifactId>homework-template-project</artifactId>
+    <artifactId>board-game</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <description></description>
+    <description>Board game implemented in JavaFX based on the Model-View-Controller (MVC) architectural pattern.</description>
     <developers>
         <developer>
             <name>Vuong Gia Hy</name>

@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -77,11 +78,7 @@ public class BoardGameController {
     @FXML
     private void handleFinishButton(ActionEvent event) throws IOException {
         Logger.info("Clicked Finish button");
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/scoreui.fxml"));
-        Parent root = fxmlLoader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+        switchToScoreWindow(event);
     }
 
 
@@ -151,11 +148,19 @@ public class BoardGameController {
                     model.move(pieceNumber, direction);
                     if (model.isRedWins()) {
                         Logger.info("RED WINS");
-                        Platform.exit();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Game Over");
+                        alert.setHeaderText("RED WINS");
+                        alert.showAndWait();
+//                        Platform.exit();
                     }
                     if (model.isBlueWins()) {
                         Logger.info("BLUE WINS");
-                        Platform.exit();
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Game Over");
+                        alert.setHeaderText("BLUE WINS");
+                        alert.showAndWait();
+//                        Platform.exit();
                     }
                     deselectSelectedPosition();
                     alterSelectionPhase();
@@ -251,4 +256,11 @@ public class BoardGameController {
         stepsCountPlayer2TextField.textProperty().bind(model.countStepPlayer2Property().asString());
     }
 
+    public void switchToScoreWindow(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/scoreui.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
 }
