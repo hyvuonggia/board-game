@@ -1,6 +1,7 @@
 package boardgame.model;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import org.tinylog.Logger;
 
@@ -56,8 +57,15 @@ public class BoardGameModel {
      */
     private ReadOnlyObjectWrapper<Player> currentPlayer = new ReadOnlyObjectWrapper<>();
 
-    private int countStepPlayer1;
-    private int countStepPlayer2;
+    /**
+     * Count the number of steps of {@code PLAYER1}
+     */
+    private ReadOnlyIntegerWrapper countStepPlayer1 = new ReadOnlyIntegerWrapper();
+
+    /**
+     * Count the number of steps of {@code PLAYER2}
+     */
+    private ReadOnlyIntegerWrapper countStepPlayer2 = new ReadOnlyIntegerWrapper();
 
     /**
      * Create {@code BoardGameModel} instance
@@ -81,6 +89,8 @@ public class BoardGameModel {
         );
         currentPlayer.set(Player.PLAYER1);
         addGameOverPositions();
+        countStepPlayer1.set(0);
+        countStepPlayer2.set(0);
     }
 
     /**
@@ -203,20 +213,58 @@ public class BoardGameModel {
         return validMoves;
     }
 
+    /**
+     * Get the number steps of {@code PLAYER1}
+     *
+     * @return number of steps
+     */
     public int getCountStepPlayer1() {
+        return countStepPlayer1.get();
+    }
+
+    /**
+     * Get the number steps property of {@code PLAYER1}
+     *
+     * @return number of steps property
+     */
+    public ReadOnlyIntegerWrapper countStepPlayer1Property() {
         return countStepPlayer1;
     }
 
+    /**
+     * Set the number of steps of {@code PLAYER1}
+     *
+     * @param countStepPlayer1 number of steps of {@code PLAYER1}
+     */
     public void setCountStepPlayer1(int countStepPlayer1) {
-        this.countStepPlayer1 = countStepPlayer1;
+        this.countStepPlayer1.set(countStepPlayer1);
     }
 
+    /**
+     * Get the number steps of {@code PLAYER2}
+     *
+     * @return number of steps
+     */
     public int getCountStepPlayer2() {
+        return countStepPlayer2.get();
+    }
+
+    /**
+     * Get the number steps property of {@code PLAYER2}
+     *
+     * @return number of steps property
+     */
+    public ReadOnlyIntegerWrapper countStepPlayer2Property() {
         return countStepPlayer2;
     }
 
+    /**
+     * Set the number of steps of {@code PLAYER2}
+     *
+     * @param countStepPlayer2 number of steps of {@code PLAYER2}
+     */
     public void setCountStepPlayer2(int countStepPlayer2) {
-        this.countStepPlayer2 = countStepPlayer2;
+        this.countStepPlayer2.set(countStepPlayer2);
     }
 
     /**

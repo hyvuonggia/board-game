@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -56,6 +57,12 @@ public class BoardGameController {
     @FXML
     private Text playerTwoNameText;
 
+    @FXML
+    private TextField stepsCountPlayer1TextField;
+
+    @FXML
+    private TextField stepsCountPlayer2TextField;
+
 
     @FXML
     private void initialize() {
@@ -64,6 +71,7 @@ public class BoardGameController {
         setSelectablePositions();
         showSelectablePositions();
         alterPlayer();
+        bindCountSteps();
     }
 
     @FXML
@@ -236,6 +244,11 @@ public class BoardGameController {
                     Logger.info("Switch to {}", newValue);
                 }
         );
+    }
+
+    public void bindCountSteps(){
+        stepsCountPlayer1TextField.textProperty().bind(model.countStepPlayer1Property().asString());
+        stepsCountPlayer2TextField.textProperty().bind(model.countStepPlayer2Property().asString());
     }
 
 }
