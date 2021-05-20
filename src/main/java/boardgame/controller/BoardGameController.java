@@ -1,9 +1,11 @@
 package boardgame.controller;
 
 import boardgame.model.*;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,7 +24,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.tinylog.Logger;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,7 +39,6 @@ public class BoardGameController {
     private List<Position> selectablePositions = new ArrayList<>();
 
     private Position selected;
-
 
     private enum SelectionPhase {
         SELECT_FROM,
@@ -75,7 +75,7 @@ public class BoardGameController {
         showSelectablePositions();
         model.createPlayers();
         alterPlayer();
-        bindCountSteps();
+        addBindCountStep();
     }
 
     @FXML
@@ -154,18 +154,14 @@ public class BoardGameController {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText("RED WINS");
-                        storeData();
                         alert.showAndWait();
-//                        Platform.exit();
                     }
                     if (model.isBlueWins()) {
                         Logger.info("BLUE WINS");
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText("BLUE WINS");
-                        storeData();
                         alert.showAndWait();
-//                        Platform.exit();
                     }
                     deselectSelectedPosition();
                     alterSelectionPhase();
@@ -258,7 +254,7 @@ public class BoardGameController {
         );
     }
 
-    private void bindCountSteps() {
+    private void addBindCountStep() {
         stepsCountPlayer1TextField.textProperty().bind(model.countStepPlayer1Property().asString());
         stepsCountPlayer2TextField.textProperty().bind(model.countStepPlayer2Property().asString());
     }
@@ -271,15 +267,30 @@ public class BoardGameController {
         stage.show();
     }
 
-    private void storeData() {
+
+    private void storeData() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-        try (var writer = new FileWriter("player.json")) {
-            objectMapper.writeValue(writer, model.getPlayer1());
-            objectMapper.writeValue(writer, model.getPlayer2());
-        } catch (IOException e) {
-            e.printStackTrace();
+        try(var writer = new FileWriter("player.json")){
+           objectMapper.writeValue(writer, model.getPlayer1());
+           objectMapper.writeValue(writer, model.getPlayer2());
         }
 
+
+    }
+
+
+    public static void main(String[] args) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        var model = new BoardGameModel();
+        model.createPlayers();
+        var player1 = model.getPlayer1();
+        var player2 = model.getPlayer2();
+
+
+
+        System.out.println(objectMapper.writeValueAsString(player1));
+        System.out.println(objectMapper.writeValueAsString(player2));
     }
 }
+

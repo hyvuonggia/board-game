@@ -346,6 +346,14 @@ public class BoardGameModel {
 //        redWinPositions.add(new Position(0,4));
 //        redWinPositions.add(new Position(1,0));
 //        redWinPositions.add(new Position(1,4));
+
+//        blueWinPositions.add(new Position(4, 0));
+//        blueWinPositions.add(new Position(4, 1));
+//        blueWinPositions.add(new Position(4, 2));
+//        blueWinPositions.add(new Position(4, 3));
+//        blueWinPositions.add(new Position(4, 4));
+//        blueWinPositions.add(new Position(3, 0));
+//        blueWinPositions.add(new Position(3, 4));
     }
 
     private List<Position> getRedPiecesPositions() {
@@ -371,7 +379,8 @@ public class BoardGameModel {
                 return false;
             }
         }
-        setNumSteps();
+        player1.setStepCount(getCountStepPlayer1());
+        Logger.info("Player 1 took {} steps", player1.getStepCount());
         return true;
     }
 
@@ -398,7 +407,8 @@ public class BoardGameModel {
                 return false;
             }
         }
-        setNumSteps();
+        player2.setStepCount(getCountStepPlayer2());
+        Logger.info("Player 2 took {} steps", player2.getStepCount());
         return true;
     }
 
@@ -428,12 +438,7 @@ public class BoardGameModel {
         player2 = new boardgame.model.Player();
     }
 
-    private void setNumSteps(){
-        player1.setStepCount(getCountStepPlayer1());
-        Logger.info("Player 1 took {} steps", player1.getStepCount());
-        player2.setStepCount(getCountStepPlayer2());
-        Logger.info("Player 2 took {} steps", player2.getStepCount());
-    }
+
 
 
 }
