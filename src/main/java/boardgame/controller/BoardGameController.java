@@ -1,9 +1,6 @@
 package boardgame.controller;
 
-import boardgame.model.BoardGameModel;
-import boardgame.model.ChessColor;
-import boardgame.model.PieceDirection;
-import boardgame.model.Position;
+import boardgame.model.*;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -263,4 +260,6 @@ public class BoardGameController {
         stage.setScene(new Scene(root));
         stage.show();
     }
+
+
 }
