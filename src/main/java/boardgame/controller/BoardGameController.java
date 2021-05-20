@@ -1,11 +1,6 @@
 package boardgame.controller;
 
 import boardgame.model.*;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -268,29 +263,5 @@ public class BoardGameController {
     }
 
 
-    private void storeData() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-
-        try(var writer = new FileWriter("player.json")){
-           objectMapper.writeValue(writer, model.getPlayer1());
-           objectMapper.writeValue(writer, model.getPlayer2());
-        }
-
-
-    }
-
-
-    public static void main(String[] args) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        var model = new BoardGameModel();
-        model.createPlayers();
-        var player1 = model.getPlayer1();
-        var player2 = model.getPlayer2();
-
-
-
-        System.out.println(objectMapper.writeValueAsString(player1));
-        System.out.println(objectMapper.writeValueAsString(player2));
-    }
 }
 
