@@ -1,5 +1,6 @@
 package boardgame.controller;
 
+import boardgame.model.PlayerDao;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.tinylog.Logger;
 
 import java.io.IOException;
@@ -38,6 +42,7 @@ public class NameController {
             stage.show();
         }
     }
+
 
 
 }

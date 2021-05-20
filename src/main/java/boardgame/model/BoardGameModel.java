@@ -380,6 +380,7 @@ public class BoardGameModel {
             }
         }
         player1.setStepCount(getCountStepPlayer1());
+        player1.setScore(player1.getScore() + 100);
         Logger.info("Player 1 took {} steps", player1.getStepCount());
         return true;
     }
@@ -408,6 +409,7 @@ public class BoardGameModel {
             }
         }
         player2.setStepCount(getCountStepPlayer2());
+        player2.setScore(player2.getScore() + 100);
         Logger.info("Player 2 took {} steps", player2.getStepCount());
         return true;
     }
@@ -437,8 +439,5 @@ public class BoardGameModel {
         player1 = new boardgame.model.Player();
         player2 = new boardgame.model.Player();
     }
-
-
-
 
 }

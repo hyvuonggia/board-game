@@ -85,6 +85,12 @@
             <version>${jdbi.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.tinylog</groupId>
+            <artifactId>slf4j-tinylog</artifactId>
+            <version>${tinylog.version}</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

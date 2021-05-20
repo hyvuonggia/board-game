@@ -17,6 +17,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.jdbi.v3.core.Handle;
+import org.jdbi.v3.core.Jdbi;
+import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.tinylog.Logger;
 
 import java.io.FileReader;
@@ -34,6 +37,8 @@ public class BoardGameController {
     private List<Position> selectablePositions = new ArrayList<>();
 
     private Position selected;
+
+    public static List<Player> playerList;
 
     private enum SelectionPhase {
         SELECT_FROM,
@@ -71,11 +76,13 @@ public class BoardGameController {
         model.createPlayers();
         alterPlayer();
         addBindCountStep();
+
     }
 
     @FXML
     private void handleFinishButton(ActionEvent event) throws IOException {
         Logger.info("Clicked Finish button");
+        generateScore();
         switchToScoreWindow(event);
     }
 
@@ -261,6 +268,29 @@ public class BoardGameController {
         stage.setScene(new Scene(root));
         stage.show();
     }
+
+
+    public static List<Player> getPlayerList() {
+        return playerList;
+    }
+
+    private void generateScore(){
+        Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test");
+        jdbi.installPlugin(new SqlObjectPlugin());
+
+        try(Handle handle = jdbi.open()){
+            PlayerDao dao = handle.attach(PlayerDao.class);
+            dao.createPlayerTable();
+
+            dao.insertPlayer(model.getPlayer1());
+            Logger.info("Added Player 1 into DATABASE");
+            dao.insertPlayer(model.getPlayer2());
+            Logger.info("Added Player 2 into DATABASE");
+
+        }
+    }
+
+
 
 
 }
