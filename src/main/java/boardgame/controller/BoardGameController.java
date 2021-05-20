@@ -1,6 +1,8 @@
 package boardgame.controller;
 
 import boardgame.model.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -20,6 +22,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.tinylog.Logger;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +73,7 @@ public class BoardGameController {
         createPieces();
         setSelectablePositions();
         showSelectablePositions();
+        model.createPlayers();
         alterPlayer();
         bindCountSteps();
     }
@@ -148,6 +154,7 @@ public class BoardGameController {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText("RED WINS");
+                        storeData();
                         alert.showAndWait();
 //                        Platform.exit();
                     }
@@ -156,6 +163,7 @@ public class BoardGameController {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Game Over");
                         alert.setHeaderText("BLUE WINS");
+                        storeData();
                         alert.showAndWait();
 //                        Platform.exit();
                     }
@@ -233,14 +241,16 @@ public class BoardGameController {
     public void setPlayerOneName(String name) {
         Logger.info("Setting player one's name to {}", name);
         this.playerOneNameText.setText(name);
+        model.getPlayer1().setName(name);
     }
 
     public void setPlayerTwoName(String name) {
         Logger.info("Setting player two's name to {}", name);
         this.playerTwoNameText.setText(name);
+        model.getPlayer2().setName(name);
     }
 
-    public void alterPlayer() {
+    private void alterPlayer() {
         model.currentPlayerProperty().addListener(
                 (observableValue, oldValue, newValue) -> {
                     Logger.info("Switch to {}", newValue);
@@ -248,12 +258,12 @@ public class BoardGameController {
         );
     }
 
-    public void bindCountSteps(){
+    private void bindCountSteps() {
         stepsCountPlayer1TextField.textProperty().bind(model.countStepPlayer1Property().asString());
         stepsCountPlayer2TextField.textProperty().bind(model.countStepPlayer2Property().asString());
     }
 
-    public void switchToScoreWindow(ActionEvent event) throws IOException {
+    private void switchToScoreWindow(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/scoreui.fxml"));
         Parent root = fxmlLoader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -261,5 +271,15 @@ public class BoardGameController {
         stage.show();
     }
 
+    private void storeData() {
+        ObjectMapper objectMapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
+        try (var writer = new FileWriter("player.json")) {
+            objectMapper.writeValue(writer, model.getPlayer1());
+            objectMapper.writeValue(writer, model.getPlayer2());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

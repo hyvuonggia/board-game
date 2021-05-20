@@ -32,6 +32,11 @@ public class BoardGameModel {
      */
     private List<Position> blueWinPositions = new ArrayList<>();
 
+    private boardgame.model.Player player1;
+    private boardgame.model.Player player2;
+
+
+
     /**
      * Represents 2 player of the game.
      */
@@ -366,6 +371,7 @@ public class BoardGameModel {
                 return false;
             }
         }
+        setNumSteps();
         return true;
     }
 
@@ -392,6 +398,42 @@ public class BoardGameModel {
                 return false;
             }
         }
+        setNumSteps();
         return true;
     }
+
+    /**
+     * Get Player 1 instance.
+     *
+     * @return instance of Player 1
+     */
+    public boardgame.model.Player getPlayer1() {
+        return player1;
+    }
+
+    /**
+     * Get Player 2 instance.
+     *
+     * @return instance of Player 2
+     */
+    public boardgame.model.Player getPlayer2() {
+        return player2;
+    }
+
+    /**
+     * Create 2 players instances
+     */
+    public void createPlayers(){
+        player1 = new boardgame.model.Player();
+        player2 = new boardgame.model.Player();
+    }
+
+    private void setNumSteps(){
+        player1.setStepCount(getCountStepPlayer1());
+        Logger.info("Player 1 took {} steps", player1.getStepCount());
+        player2.setStepCount(getCountStepPlayer2());
+        Logger.info("Player 2 took {} steps", player2.getStepCount());
+    }
+
+
 }
