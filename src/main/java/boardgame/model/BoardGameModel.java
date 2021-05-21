@@ -131,7 +131,7 @@ public class BoardGameModel {
      *
      * @param pieces array of pieces that needs to check
      */
-    public void checkPieces(ChessPiece[] pieces) {
+    private void checkPieces(ChessPiece[] pieces) {
         for (ChessPiece piece : pieces) {
             if (!isOnBoard(piece.getPosition())) {
                 throw new IllegalArgumentException();
@@ -186,7 +186,7 @@ public class BoardGameModel {
      * @return {@code true} if the next move is inside the board and not previously occupied by another piece.
      * Otherwise {@code return} {@code false}.
      */
-    public boolean isValidMove(int pieceNumber, PieceDirection direction) {
+    private boolean isValidMove(int pieceNumber, PieceDirection direction) {
         if (pieceNumber < 0 || pieceNumber >= pieces.length) {
             throw new IllegalArgumentException();
         }
@@ -440,4 +440,8 @@ public class BoardGameModel {
         player2 = new boardgame.model.Player();
     }
 
+    public static void main(String[] args) {
+        BoardGameModel model = new BoardGameModel();
+        System.out.println(model);
+    }
 }
