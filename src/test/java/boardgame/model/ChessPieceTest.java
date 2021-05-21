@@ -8,30 +8,46 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChessPieceTest {
 
-    Position position;
+    ChessPiece piece;
 
-    void assertPosition(int expectRow, int expectCol, Position position) {
+    void assertPiece(int expectedRow, int expectedCol, ChessPiece piece){
         assertAll(
-                () -> assertEquals(expectRow, position.row()),
-                () -> assertEquals(expectCol, position.col())
+                () -> assertEquals(expectedRow, piece.getPosition().row()),
+                () -> assertEquals(expectedCol, piece.getPosition().col())
         );
     }
 
     @BeforeEach
     void init() {
-        position = new Position(0, 0);
+        piece = new ChessPiece(ChessColor.RED, new Position(0, 0));
     }
 
     @Test
-    void moveTo() {
-        assertPosition(-1, -1, position.moveTo(PieceDirection.UP_LEFT));
-        assertPosition(-1, 1, position.moveTo(PieceDirection.UP_RIGHT));
-        assertPosition(1, -1, position.moveTo(PieceDirection.DOWN_LEFT));
-        assertPosition(1, 1, position.moveTo(PieceDirection.DOWN_RIGHT));
+    void moveTo_down_right() {
+        piece.moveTo(PieceDirection.DOWN_RIGHT);
+        assertPiece(1, 1, piece);
+    }
+
+    @Test
+    void moveTo_down_left() {
+        piece.moveTo(PieceDirection.DOWN_LEFT);
+        assertPiece(1, -1, piece);
+    }
+
+    @Test
+    void moveTo_up_right() {
+        piece.moveTo(PieceDirection.UP_RIGHT);
+        assertPiece(-1, 1, piece);
+    }
+
+    @Test
+    void moveTo_up_left() {
+        piece.moveTo(PieceDirection.UP_LEFT);
+        assertPiece(-1, -1, piece);
     }
 
     @Test
     void testToString() {
-        assertEquals("(0, 0)", position.toString());
+        assertEquals("RED-(0, 0)", piece.toString());
     }
 }

@@ -13,6 +13,6 @@ class PieceDirectionTest {
         assertEquals(PieceDirection.DOWN_LEFT, PieceDirection.of(1, -1));
         assertEquals(PieceDirection.DOWN_RIGHT, PieceDirection.of(1, 1));
         assertThrows(IllegalArgumentException.class, () -> PieceDirection.of(-1, 2));
-        assertThrows(IllegalArgumentException.class, () -> PieceDirection.of(1, 0));
+        assertThrows(IllegalArgumentException.class, () -> PieceDirection.of(0, 0));
     }
 }
