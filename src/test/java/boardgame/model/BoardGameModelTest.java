@@ -183,7 +183,4 @@ class BoardGameModelTest {
         assertFalse(model.isBlueWins());
     }
 
-    @Test
-    void createPlayers() {
-    }
 }

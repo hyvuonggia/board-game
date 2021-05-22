@@ -38,7 +38,7 @@ public class BoardGameController {
 
     private Position selected;
 
-    public static List<Player> playerList;
+    public static List<Player> playerList = new ArrayList<>();
 
     private enum SelectionPhase {
         SELECT_FROM,
