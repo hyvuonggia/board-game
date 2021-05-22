@@ -282,12 +282,10 @@ public class BoardGameModel {
         pieces[pieceNumber].moveTo(direction);
         if (currentPlayer.get().equals(Player.PLAYER1)){
             setCountStepPlayer1(getCountStepPlayer1() + 1);
-            player1.setStepCount(getCountStepPlayer1() + 1);
             Logger.info("Number of steps of PLAYER1: {}", countStepPlayer1);
         }
         if (currentPlayer.get().equals(Player.PLAYER2)){
             setCountStepPlayer2(getCountStepPlayer2() + 1);
-            player2.setStepCount(getCountStepPlayer2() + 1);
             Logger.info("Number of steps of PLAYER2: {}", countStepPlayer2);
         }
         currentPlayer.set(currentPlayer.get().next());
@@ -381,7 +379,6 @@ public class BoardGameModel {
                 return false;
             }
         }
-        player1.setStepCount(getCountStepPlayer1());
         player1.setScore(player1.getScore() + 100);
         Logger.info("Player 1 took {} steps", player1.getStepCount());
         return true;
@@ -410,7 +407,6 @@ public class BoardGameModel {
                 return false;
             }
         }
-        player2.setStepCount(getCountStepPlayer2());
         player2.setScore(player2.getScore() + 100);
         Logger.info("Player 2 took {} steps", player2.getStepCount());
         return true;

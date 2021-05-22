@@ -85,8 +85,14 @@ public class BoardGameController {
     @FXML
     private void handleFinishButton(ActionEvent event) throws IOException {
         Logger.info("Clicked Finish button");
+        setPlayerStepCount();
         generateScore();
         switchToScoreWindow(event);
+    }
+
+    private void setPlayerStepCount(){
+        model.getPlayer1().setStepCount(model.getCountStepPlayer1());
+        model.getPlayer2().setStepCount(model.getCountStepPlayer2());
     }
 
 
