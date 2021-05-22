@@ -1,5 +1,6 @@
 package boardgame.controller;
 
+import boardgame.model.BoardGameModel;
 import boardgame.model.Player;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +26,7 @@ public class ScoreController {
 
     @FXML
     private TableColumn<Player, Integer> score;
+
 
     @FXML
     private void initialize(){

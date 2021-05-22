@@ -282,10 +282,12 @@ public class BoardGameModel {
         pieces[pieceNumber].moveTo(direction);
         if (currentPlayer.get().equals(Player.PLAYER1)){
             setCountStepPlayer1(getCountStepPlayer1() + 1);
+            player1.setStepCount(getCountStepPlayer1() + 1);
             Logger.info("Number of steps of PLAYER1: {}", countStepPlayer1);
         }
         if (currentPlayer.get().equals(Player.PLAYER2)){
             setCountStepPlayer2(getCountStepPlayer2() + 1);
+            player2.setStepCount(getCountStepPlayer2() + 1);
             Logger.info("Number of steps of PLAYER2: {}", countStepPlayer2);
         }
         currentPlayer.set(currentPlayer.get().next());

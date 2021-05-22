@@ -38,7 +38,11 @@ public class BoardGameController {
 
     private Position selected;
 
-    public static List<Player> playerList = new ArrayList<>();
+    private static List<Player> playerList;
+
+    public static List<Player> getPlayerList() {
+        return playerList;
+    }
 
     private enum SelectionPhase {
         SELECT_FROM,
@@ -71,12 +75,11 @@ public class BoardGameController {
     private void initialize() {
         createBoard();
         createPieces();
+        model.createPlayers();
         setSelectablePositions();
         showSelectablePositions();
-        model.createPlayers();
         alterPlayer();
         addBindCountStep();
-
     }
 
     @FXML
@@ -270,15 +273,11 @@ public class BoardGameController {
     }
 
 
-    public static List<Player> getPlayerList() {
-        return playerList;
-    }
-
-    private void generateScore(){
+    private void generateScore() {
         Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test");
         jdbi.installPlugin(new SqlObjectPlugin());
 
-        try(Handle handle = jdbi.open()){
+        try (Handle handle = jdbi.open()) {
             PlayerDao dao = handle.attach(PlayerDao.class);
             dao.createPlayerTable();
 
@@ -287,10 +286,10 @@ public class BoardGameController {
             dao.insertPlayer(model.getPlayer2());
             Logger.info("Added Player 2 into DATABASE");
 
+            playerList = dao.listPlayers();
+
         }
     }
-
-
 
 
 }
