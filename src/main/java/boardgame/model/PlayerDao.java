@@ -25,7 +25,7 @@ public interface PlayerDao {
     void insertPlayer(@BindBean Player player);
 
     @SqlQuery("""
-    SELECT * FROM playertable ORDER BY score DESC
+    SELECT * FROM playertable ORDER BY score DESC, stepCount
     """)
     List<Player> listPlayers();
 }

@@ -22,8 +22,6 @@ import org.jdbi.v3.core.Jdbi;
 import org.jdbi.v3.sqlobject.SqlObjectPlugin;
 import org.tinylog.Logger;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +88,7 @@ public class BoardGameController {
         switchToScoreWindow(event);
     }
 
-    private void setPlayerStepCount(){
+    private void setPlayerStepCount() {
         model.getPlayer1().setStepCount(model.getCountStepPlayer1());
         model.getPlayer2().setStepCount(model.getCountStepPlayer2());
     }
@@ -278,14 +276,13 @@ public class BoardGameController {
         stage.show();
     }
 
-
     private void generateScore() {
-        Jdbi jdbi = Jdbi.create("jdbc:h2:mem:test");
+        Jdbi jdbi = Jdbi.create("jdbc:h2:file:./playerdb");
         jdbi.installPlugin(new SqlObjectPlugin());
 
         try (Handle handle = jdbi.open()) {
             PlayerDao dao = handle.attach(PlayerDao.class);
-            dao.createPlayerTable();
+//            dao.createPlayerTable();
 
             dao.insertPlayer(model.getPlayer1());
             Logger.info("Added Player 1 into DATABASE");
