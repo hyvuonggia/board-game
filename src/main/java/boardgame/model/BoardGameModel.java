@@ -57,10 +57,11 @@ public class BoardGameModel {
         }
     }
 
+
     /**
      * Represents the current player.
      */
-    private ReadOnlyObjectWrapper<Player> currentPlayer = new ReadOnlyObjectWrapper<>();
+    public ReadOnlyObjectWrapper<Player> currentPlayer = new ReadOnlyObjectWrapper<>();
 
     /**
      * Count the number of steps of {@code PLAYER1}
@@ -356,7 +357,7 @@ public class BoardGameModel {
 //        blueWinPositions.add(new Position(3, 4));
     }
 
-    private List<Position> getRedPiecesPositions() {
+    public List<Position> getRedPiecesPositions() {
         List<Position> redPiecesPositions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
             if (piece.getChessColor().equals(ChessColor.RED)) {
@@ -384,7 +385,7 @@ public class BoardGameModel {
         return true;
     }
 
-    private List<Position> getBluePiecesPositions() {
+    public List<Position> getBluePiecesPositions() {
         List<Position> bluePiecesPositions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
             if (piece.getChessColor().equals(ChessColor.BLUE)) {

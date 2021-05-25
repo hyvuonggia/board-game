@@ -178,6 +178,7 @@ public class BoardGameController {
                 }
             }
         }
+
     }
 
     private void alterSelectionPhase() {
@@ -210,7 +211,13 @@ public class BoardGameController {
     private void setSelectablePositions() {
         selectablePositions.clear();
         switch (selectionPhase) {
-            case SELECT_FROM -> selectablePositions.addAll(model.getPiecePositions());
+            case SELECT_FROM -> {
+                if (model.currentPlayer.get().equals(BoardGameModel.Player.PLAYER1)) {
+                    selectablePositions.addAll(model.getRedPiecesPositions());
+                } else if (model.currentPlayer.get().equals(BoardGameModel.Player.PLAYER2)) {
+                    selectablePositions.addAll(model.getBluePiecesPositions());
+                }
+            }
             case SELECT_TO -> {
                 var pieceNumber = model.getPieceNumber(selected);
                 for (var direction : model.getValidMoves(pieceNumber)) {
@@ -261,6 +268,7 @@ public class BoardGameController {
                     Logger.info("Switch to {}", newValue);
                 }
         );
+
     }
 
     private void addBindCountStep() {
