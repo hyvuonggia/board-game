@@ -11,7 +11,7 @@ import java.util.List;
 public interface PlayerDao {
 
     @SqlUpdate("""
-    CREATE TABLE playertable(
+    CREATE TABLE IF NOT EXISTS playertable(
         name VARCHAR PRIMARY KEY,
         stepCount INTEGER,
         score INTEGER
