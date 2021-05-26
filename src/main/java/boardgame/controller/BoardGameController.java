@@ -289,7 +289,7 @@ public class BoardGameController {
 
         try (Handle handle = jdbi.open()) {
             PlayerDao dao = handle.attach(PlayerDao.class);
-            dao.createPlayerTable();
+//            dao.createPlayerTable();
 
             dao.insertPlayer(model.getPlayer1());
             Logger.info("Added Player 1 into DATABASE");
