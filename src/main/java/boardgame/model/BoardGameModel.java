@@ -36,11 +36,10 @@ public class BoardGameModel {
     private boardgame.model.Player player2;
 
 
-
     /**
      * Represents 2 player of the game.
      */
-    public enum Player{
+    public enum Player {
         PLAYER1,
         PLAYER2;
 
@@ -49,8 +48,8 @@ public class BoardGameModel {
          *
          * @return the next player.
          */
-        public Player next(){
-            return switch (this){
+        public Player next() {
+            return switch (this) {
                 case PLAYER1 -> PLAYER2;
                 case PLAYER2 -> PLAYER1;
             };
@@ -110,7 +109,7 @@ public class BoardGameModel {
     }
 
 
-    private boolean isOnBoard(Position position) {
+    public boolean isOnBoard(Position position) {
         if (position.row() >= 0 && position.row() < BOARD_SIZE && position.col() >= 0 && position.col() < BOARD_SIZE) {
             return true;
         }
@@ -183,7 +182,7 @@ public class BoardGameModel {
      * Check if the next move is still on the board and not previously occupied by another piece.
      *
      * @param pieceNumber number of the piece.
-     * @param direction direction of the next move.
+     * @param direction   direction of the next move.
      * @return {@code true} if the next move is inside the board and not previously occupied by another piece.
      * Otherwise {@code return} {@code false}.
      */
@@ -277,15 +276,15 @@ public class BoardGameModel {
      * Represents the movement of a piece.
      *
      * @param pieceNumber number of a piece.
-     * @param direction direction of the move.
+     * @param direction   direction of the move.
      */
     public void move(int pieceNumber, PieceDirection direction) {
         pieces[pieceNumber].moveTo(direction);
-        if (currentPlayer.get().equals(Player.PLAYER1)){
+        if (currentPlayer.get().equals(Player.PLAYER1)) {
             setCountStepPlayer1(getCountStepPlayer1() + 1);
             Logger.info("Number of steps of PLAYER1: {}", countStepPlayer1);
         }
-        if (currentPlayer.get().equals(Player.PLAYER2)){
+        if (currentPlayer.get().equals(Player.PLAYER2)) {
             setCountStepPlayer2(getCountStepPlayer2() + 1);
             Logger.info("Number of steps of PLAYER2: {}", countStepPlayer2);
         }
@@ -357,7 +356,79 @@ public class BoardGameModel {
 //        blueWinPositions.add(new Position(3, 4));
     }
 
-    public List<Position> getRedPiecesPositions() {
+    /**
+     * Get the list of red pieces that can be selected.
+     *
+     * @return list of red pieces that can be selected.
+     */
+    public List<Position> getSelectableRed() {
+        List<Position> list = new ArrayList<>();
+        for (ChessPiece piece : pieces) {
+            if (getRedValidMoves(getPieceNumber(piece.getPosition())).size() > 0){
+                list.add(piece.getPosition());
+            }
+        }
+        return list;
+    }
+
+    private boolean isValidMoveRed(int pieceNumber, PieceDirection direction) {
+        if (pieceNumber < 0 || pieceNumber >= pieces.length) {
+            throw new IllegalArgumentException();
+        }
+        if (pieces[pieceNumber].getChessColor().equals(ChessColor.RED)) {
+            return isValidMove(pieceNumber, direction);
+        } else {
+            return false;
+        }
+    }
+
+    private Set<PieceDirection> getRedValidMoves(int pieceNumber) {
+        Set<PieceDirection> validMoves = new HashSet<>();
+        for (PieceDirection direction : PieceDirection.values()) {
+            if (isValidMoveRed(pieceNumber, direction)) {
+                validMoves.add(direction);
+            }
+        }
+        return validMoves;
+    }
+
+    /**
+     * Get the list of blue pieces that can be selected.
+     *
+     * @return list of blue pieces that can be selected.
+     */
+    public List<Position> getSelectableBlue() {
+        List<Position> list = new ArrayList<>();
+        for (ChessPiece piece : pieces) {
+            if (getBlueValidMoves(getPieceNumber(piece.getPosition())).size() > 0){
+                list.add(piece.getPosition());
+            }
+        }
+        return list;
+    }
+
+    private boolean isValidMoveBlue(int pieceNumber, PieceDirection direction) {
+        if (pieceNumber < 0 || pieceNumber >= pieces.length) {
+            throw new IllegalArgumentException();
+        }
+        if (pieces[pieceNumber].getChessColor().equals(ChessColor.BLUE)) {
+            return isValidMove(pieceNumber, direction);
+        } else {
+            return false;
+        }
+    }
+
+    private Set<PieceDirection> getBlueValidMoves(int pieceNumber) {
+        Set<PieceDirection> validMoves = new HashSet<>();
+        for (PieceDirection direction : PieceDirection.values()) {
+            if (isValidMoveBlue(pieceNumber, direction)) {
+                validMoves.add(direction);
+            }
+        }
+        return validMoves;
+    }
+
+    private List<Position> getRedPiecesPositions() {
         List<Position> redPiecesPositions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
             if (piece.getChessColor().equals(ChessColor.RED)) {
@@ -385,7 +456,7 @@ public class BoardGameModel {
         return true;
     }
 
-    public List<Position> getBluePiecesPositions() {
+    private List<Position> getBluePiecesPositions() {
         List<Position> bluePiecesPositions = new ArrayList<>();
         for (ChessPiece piece : pieces) {
             if (piece.getChessColor().equals(ChessColor.BLUE)) {
@@ -434,7 +505,7 @@ public class BoardGameModel {
     /**
      * Create 2 players instances
      */
-    public void createPlayers(){
+    public void createPlayers() {
         player1 = new boardgame.model.Player();
         player2 = new boardgame.model.Player();
     }

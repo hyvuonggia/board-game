@@ -174,7 +174,6 @@ public class BoardGameController {
                     }
                     deselectSelectedPosition();
                     alterSelectionPhase();
-
                 }
             }
         }
@@ -213,9 +212,9 @@ public class BoardGameController {
         switch (selectionPhase) {
             case SELECT_FROM -> {
                 if (model.currentPlayer.get().equals(BoardGameModel.Player.PLAYER1)) {
-                    selectablePositions.addAll(model.getRedPiecesPositions());
+                    selectablePositions.addAll(model.getSelectableRed());
                 } else if (model.currentPlayer.get().equals(BoardGameModel.Player.PLAYER2)) {
-                    selectablePositions.addAll(model.getBluePiecesPositions());
+                    selectablePositions.addAll(model.getSelectableBlue());
                 }
             }
             case SELECT_TO -> {
@@ -301,7 +300,6 @@ public class BoardGameController {
 
         }
     }
-
 
 }
 

@@ -183,4 +183,31 @@ class BoardGameModelTest {
         assertFalse(model.isBlueWins());
     }
 
+    @Test
+    void getSelectableRed() {
+        List<Position> list = new ArrayList<>();
+        list.add(new Position(4, 0));
+        list.add(new Position(4, 1));
+        list.add(new Position(4, 2));
+        list.add(new Position(4, 3));
+        list.add(new Position(4, 4));
+        list.add(new Position(3, 0));
+        list.add(new Position(3, 4));
+
+        assertEquals(list, model.getSelectableRed());
+    }
+
+    @Test
+    void getSelectableBlue() {
+        List<Position> list = new ArrayList<>();
+        list.add(new Position(0, 0));
+        list.add(new Position(0, 1));
+        list.add(new Position(0, 2));
+        list.add(new Position(0, 3));
+        list.add(new Position(0, 4));
+        list.add(new Position(1, 0));
+        list.add(new Position(1, 4));
+
+        assertEquals(list, model.getSelectableBlue());
+    }
 }
