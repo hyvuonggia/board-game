@@ -284,12 +284,12 @@ public class BoardGameController {
     }
 
     private void generateScore() {
-        Jdbi jdbi = Jdbi.create("jdbc:h2:file:./src/main/resources/playerdb");
+        Jdbi jdbi = Jdbi.create("jdbc:h2:file:./src/main/db/playerdb");
         jdbi.installPlugin(new SqlObjectPlugin());
 
         try (Handle handle = jdbi.open()) {
             PlayerDao dao = handle.attach(PlayerDao.class);
-//            dao.createPlayerTable();
+            dao.createPlayerTable();
 
             dao.insertPlayer(model.getPlayer1());
             Logger.info("Added Player 1 into DATABASE");
